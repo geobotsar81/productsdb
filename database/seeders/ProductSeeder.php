@@ -47,7 +47,7 @@ class ProductSeeder extends Seeder
     {
         //Product::truncate();
         
-        $no_of_rows = 2000000;
+        $no_of_rows = 1000000;
         $range=range(1, $no_of_rows);
         $chunksize=2000;
 

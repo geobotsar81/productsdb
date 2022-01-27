@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Movie;
+use App\Models\Product;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
@@ -61,12 +61,12 @@ class User extends Authenticatable
     ];
 
     /**
-    * The movies created by a user
+    * The products created by a user
     *
     * @return void
     */
-    public function movies()
+    public function products()
     {
-        return $this->hasMany(Movie::class);
+        return $this->hasMany(Product::class);
     }
 }

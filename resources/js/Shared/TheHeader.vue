@@ -3,23 +3,9 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6 col-lg-4 text-center text-sm-start">
-                    <inertia-link :href="route('home')" class="logo"> TheMovieDB </inertia-link>
+                    <inertia-link :href="route('home')" class="logo"> ProductsDB </inertia-link>
                 </div>
-                <div class="col-sm-6 col-lg-8 text-center text-sm-end">
-                    <template v-if="$page.props.user">
-                        <div class="row">
-                            <div class="col-12">
-                                Welcome <strong>{{ $page.props.user.name }}</strong>
-                            </div>
-                        </div>
-                        <inertia-link :href="route('dashboard')"> Dashboard </inertia-link> |
-                        <inertia-link :href="route('logout')" method="post"> Logout </inertia-link>
-                    </template>
-                    <template v-else>
-                        <inertia-link :href="route('login')" class="pe-2"> Log in </inertia-link> |
-                        <inertia-link :href="route('register')"> Register </inertia-link>
-                    </template>
-                </div>
+                <div class="col-sm-6 col-lg-8 text-center text-sm-end"><inertia-link :href="route('products.statistics')" class="pe-2"> Statistics </inertia-link></div>
             </div>
         </div>
     </header>

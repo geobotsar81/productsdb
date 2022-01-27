@@ -2,7 +2,7 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-12"><h2>TheMovieDB</h2></div>
+                <div class="col-12"><h2>ProductsDB</h2></div>
             </div>
             <div class="row footer__copyrights">
                 <div class="col-12">© George Botsaris - {{ currentYear }}</div>
