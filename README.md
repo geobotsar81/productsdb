@@ -1,8 +1,21 @@
 # ProductsDB
 
+The task at hand was to create a product database, seed it with 5m+ products, and display some statistical data in charts by querying the database.
+
 [TOC]
 
-## A. Project summary
+## A. Problem analysis
+
+There were 2 main areas to focus when tackling the above task. The first was how to handle seeding the database with this amount of data, and the second was how to best query the data from the db and display the statistics.
+
+### A1. Seeding the database
+
+The best way to seed the database was using chunks in the database seeder. That meant splitting the seeing in smaller pieces/chunks in order to avoid memory exhaustion issues. Further to that, insert was used instead of create as it is faster, along
+and the product array was emptied in each iteration to avoid memory leakage. Lastly the php memory limit on the docker container was increased, as the default 128M didnt give a lot of room to work with.
+
+### A2. Querying the database
+
+During the initial migration 3 indexes were created for the columns that would be queried. This would help for fetching the queried data from the database faster.
 
 ## B. Process
 
@@ -14,7 +27,7 @@ Seeded 2,000,000 x 2-3 times
 
 ## C Installation instructions
 
-### 0. Run already setup project
+### Run already setup project
 
 Skip to Step 1 if the project has not been set up yet
 
@@ -24,7 +37,7 @@ Skip to Step 1 if the project has not been set up yet
 ### 1. Setup repository
 
     git init
-    git clone ...
+    git clone git@github.com:geobotsar81/productsdb.git
 
 ### 2. Setup docker containers
 
@@ -54,10 +67,15 @@ Skip to Step 1 if the project has not been set up yet
 
 ### 7. Run Migrations and seed database
 
-    npm run docker-artisan -- migrate
-    npm run docker-artisan -- db:sed
+    docker exec -it php8 /bin/bash
+    php artisan migrate
+    php artisan db:seed
 
 ### 8. Run tests
 
     npm run docker-test
     npm run docker-dusk-test
+
+### 9. Other
+
+    docker exec -it php8 /bin/bash

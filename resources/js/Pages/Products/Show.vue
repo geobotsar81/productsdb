@@ -1,5 +1,5 @@
 <template>
-    <Head :title="movie.title + '-' + movie.year" />
+    <Head :title="product.title + '-' + product.year" />
     <the-main id="main">
         <div class="container">
             <div class="row">
@@ -9,14 +9,8 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12">
-                    <h1>{{ movie.title }} - {{ movie.year }}</h1>
+                    <app-product :product="product" source="product"></app-product>
                 </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-12 col-sm-6 col-lg-3"><img class="img-fluid" :src="storageUrl + '/' + movie.image" /></div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-12">{{ movie.description }}</div>
             </div>
         </div>
     </the-main>
@@ -26,6 +20,7 @@ import { defineComponent } from "vue";
 import { Head, InertiaLink } from "@inertiajs/inertia-vue3";
 import AppLayout from "@/Layouts/AppLayout";
 import TheMain from "@/Shared/TheMain";
+import AppProduct from "@/Shared/AppProduct";
 
 export default defineComponent({
     components: {
@@ -33,12 +28,12 @@ export default defineComponent({
         InertiaLink,
         AppLayout,
         TheMain,
+        AppProduct,
     },
     layout: AppLayout,
     data() {
         return {
-            movie: this.$page.props.movie,
-            storageUrl: this.$page.props.storageUrl,
+            product: this.$page.props.product,
         };
     },
 });
