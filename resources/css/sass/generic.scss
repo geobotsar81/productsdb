@@ -1,0 +1,72 @@
+body {
+    font-family: $appFont;
+    background-color: #ffffff;
+}
+
+a {
+    text-decoration: none;
+    transition: $appTransition;
+
+    &:hover,
+    &:focus {
+        color: $appBlack;
+    }
+}
+
+.form-control {
+    height: 50px;
+    width: 400px;
+    display: block;
+    transition: $appTransition;
+
+    &:hover,
+    &:focus {
+        box-shadow: none;
+        border-color: $appRed;
+    }
+}
+
+.form-control[type="file"] {
+    height: 37px;
+}
+
+.form-select {
+    height: 50px;
+
+    &:hover,
+    &:focus {
+        box-shadow: none;
+        border-color: $appRed;
+    }
+}
+
+textarea.form-control {
+    height: 200px;
+}
+
+.buttonBlack {
+    display: inline-block;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 14px;
+    color: $appBlack !important;
+    border-radius: 4px;
+    padding: 15px 40px;
+    transition: all 0.4s ease-out;
+    background-color: #ffffff;
+    text-decoration: none;
+    border: solid 1px $appBlack;
+
+    &:hover,
+    &:focus {
+        color: #ffffff !important;
+        background-color: $appBlack;
+        text-decoration: none;
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.formError {
+    color: $appRed;
+}
