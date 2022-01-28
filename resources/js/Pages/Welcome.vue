@@ -19,33 +19,33 @@
                 <div class="col-12">
                     <form id="searchForm" @submit.prevent="searchProducts">
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="minPrice">Min Price</label>
                                 <input id="minPrice" type="number" min="0" max="10000" v-model="minPrice" class="form-control" placeholder="Min Price" />
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="maxPrice">Max Price</label>
                                 <input id="maxPrice" type="number" min="0" max="10000" v-model="maxPrice" class="form-control" placeholder="Max Price" />
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="minReviews">Min Reviews</label>
                                 <input id="minReviews" type="number" min="0" max="1000" v-model="minReviews" class="form-control" placeholder="Min Reviews" />
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="maxReviews">Max Reviews</label>
                                 <input id="maxReviews" type="number" min="0" max="1000" v-model="maxReviews" class="form-control" placeholder="Max Reviews" />
                             </div>
-                            <div class="col-sm-2">
+                        </div>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="minDate">Min Date</label>
                                 <input id="minDate" type="text" v-model="minDate" class="form-control" placeholder="d/m/Y" />
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="maxDate">Max Date</label>
                                 <input id="maxDate" type="text" v-model="maxDate" class="form-control" placeholder="d/m/Y" />
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <label for="sortProducts">Sort products by</label>
                                 <select id="sortProducts" v-model="sortFilter" class="form-select" aria-label="Sort products by">
                                     <option value="1" selected>Price &#8595;</option>
@@ -56,8 +56,8 @@
                                     <option value="6">Reviews &#8593;</option>
                                 </select>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="searchProducts" @click="searchProducts">Search</div>
+                            <div class="col-sm-6 col-lg-3">
+                                <span class="searchProductsBtn" @click="searchProducts">Search</span>
                             </div>
                         </div>
                     </form>
@@ -198,9 +198,6 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-.searchProducts {
-    width: 100%;
-}
 label {
     font-size: 14px;
 }
@@ -214,12 +211,12 @@ label {
     }
 }
 
-.searchProducts {
+.searchProductsBtn {
     font-size: 15px;
     font-weight: 700;
     background-color: $appRed;
     color: #fff;
-    padding: 10px 20px;
+    padding: 10px 40px;
     border-radius: 25px;
     display: inline-block;
     margin-top: 30px;
