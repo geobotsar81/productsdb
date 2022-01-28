@@ -20,11 +20,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
-//Get paginated products for the homepage
-Route::post('products-paginated', [ProductController::class,'paginated'])->name('products.paginated');
-
+//Search products in homepage
+Route::post('search-products', [ProductController::class,'search'])->name('products.search');
 Route::get('statistics', [ProductController::class,'show'])->name('products.statistics');
-Route::post('search-products', [ProductController::class,'store'])->name('products.search');
+
 
 //Display a product
 Route::get('show/{product}', [ProductController::class,'show'])->name('products.show');
