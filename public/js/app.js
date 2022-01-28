@@ -36637,7 +36637,7 @@ var _hoisted_13 = {
   "class": "row"
 };
 var _hoisted_14 = {
-  "class": "col-sm-2"
+  "class": "col-sm-6 col-lg-3"
 };
 
 var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
@@ -36649,7 +36649,7 @@ var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_16 = {
-  "class": "col-sm-2"
+  "class": "col-sm-6 col-lg-3"
 };
 
 var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
@@ -36661,7 +36661,7 @@ var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_18 = {
-  "class": "col-sm-2"
+  "class": "col-sm-6 col-lg-3"
 };
 
 var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
@@ -36673,7 +36673,7 @@ var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_20 = {
-  "class": "col-sm-2"
+  "class": "col-sm-6 col-lg-3"
 };
 
 var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
@@ -36685,10 +36685,13 @@ var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_22 = {
-  "class": "col-sm-2"
+  "class": "row mt-2 mb-2"
+};
+var _hoisted_23 = {
+  "class": "col-sm-6 col-lg-3"
 };
 
-var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_24 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "minDate"
   }, "Min Date", -1
@@ -36696,11 +36699,11 @@ var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_24 = {
-  "class": "col-sm-2"
+var _hoisted_25 = {
+  "class": "col-sm-6 col-lg-3"
 };
 
-var _hoisted_25 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_26 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "maxDate"
   }, "Max Date", -1
@@ -36708,11 +36711,8 @@ var _hoisted_25 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_26 = {
-  "class": "row"
-};
 var _hoisted_27 = {
-  "class": "col-sm-3"
+  "class": "col-sm-6 col-lg-3"
 };
 
 var _hoisted_28 = /*#__PURE__*/_withScopeId(function () {
@@ -36774,7 +36774,7 @@ var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
 
 var _hoisted_35 = [_hoisted_29, _hoisted_30, _hoisted_31, _hoisted_32, _hoisted_33, _hoisted_34];
 var _hoisted_36 = {
-  "class": "col-sm-2"
+  "class": "col-sm-6 col-lg-3"
 };
 var _hoisted_37 = {
   key: 1,
@@ -36887,7 +36887,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         placeholder: "Max Reviews"
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.maxReviews]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.maxReviews]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         id: "minDate",
         type: "text",
         "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
@@ -36897,7 +36897,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         placeholder: "d/m/Y"
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.minDate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.minDate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         id: "maxDate",
         type: "text",
         "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
@@ -36907,7 +36907,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         placeholder: "d/m/Y"
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.maxDate]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.maxDate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
         id: "sortProducts",
         "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
           return _ctx.sortFilter = $event;
@@ -36916,8 +36916,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "aria-label": "Sort products by"
       }, _hoisted_35, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.sortFilter]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "searchProducts",
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.sortFilter]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        "class": "searchProductsBtn",
         onClick: _cache[7] || (_cache[7] = function () {
           return _ctx.searchProducts && _ctx.searchProducts.apply(_ctx, arguments);
         })
@@ -42434,7 +42434,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".searchProducts[data-v-317d1a6e] {\n  width: 100%;\n}\nlabel[data-v-317d1a6e] {\n  font-size: 14px;\n}\n.paginationLinks[data-v-317d1a6e] {\n  color: #002f40;\n}\n.paginationLinks i[data-v-317d1a6e] {\n  font-size: 30px;\n  color: #fd5853;\n  cursor: pointer;\n  padding: 15px 10px;\n}\n.searchProducts[data-v-317d1a6e] {\n  font-size: 15px;\n  font-weight: 700;\n  background-color: #fd5853;\n  color: #fff;\n  padding: 10px 20px;\n  border-radius: 25px;\n  display: inline-block;\n  margin-top: 30px;\n  text-align: center;\n  cursor: pointer;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "label[data-v-317d1a6e] {\n  font-size: 14px;\n}\n.paginationLinks[data-v-317d1a6e] {\n  color: #002f40;\n}\n.paginationLinks i[data-v-317d1a6e] {\n  font-size: 30px;\n  color: #fd5853;\n  cursor: pointer;\n  padding: 15px 10px;\n}\n.searchProductsBtn[data-v-317d1a6e] {\n  font-size: 15px;\n  font-weight: 700;\n  background-color: #fd5853;\n  color: #fff;\n  padding: 10px 40px;\n  border-radius: 25px;\n  display: inline-block;\n  margin-top: 30px;\n  text-align: center;\n  cursor: pointer;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
