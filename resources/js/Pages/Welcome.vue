@@ -47,7 +47,7 @@
             </div>
 
             <div class="row mt-2" v-if="searching">
-                <div class="col-12"><img src="img/LoaderIcon.gif" /></div>
+                <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...</div>
             </div>
             <div class="mt-4" v-if="products && !searching">
                 <div v-for="(product, index) in products" :key="index">
