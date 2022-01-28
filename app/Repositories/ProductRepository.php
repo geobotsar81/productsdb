@@ -19,25 +19,30 @@ class ProductRepository
      */
     public function paginated(Request $request):Paginator
     {
-
         $minPrice=intval($request['minPrice']);
         $maxPrice=intval($request['maxPrice']);
         $minReviews=intval($request['minReviews']);
         $maxReviews=intval($request['maxReviews']);
         $sort=intval($request['sort']);
 
-        $sortBy = match ($sort){
-            1 => "price",
-            2 => "date_listed",
-            3 => "reviews",
-        };
+        switch ($sort) {
+            case 1:
+                $sortBy ="price";
+                break;
+            case 2:
+                $sortBy ="date_listed";
+                break;
+            case 3:
+                $sortBy ="reviews";
+                break;
+        }
 
         $products=DB::table('products')
-        ->where('price','>=',$minPrice)
-        ->where('price','<=',$maxPrice)
-        ->where('reviews','>=',$minReviews)
-        ->where('reviews','<=',$maxReviews)
-        ->orderBy($sortBy,'desc')
+        ->where('price', '>=', $minPrice)
+        ->where('price', '<=', $maxPrice)
+        ->where('reviews', '>=', $minReviews)
+        ->where('reviews', '<=', $maxReviews)
+        ->orderBy($sortBy, 'desc')
         ->simplePaginate(10);
 
         return $products;
