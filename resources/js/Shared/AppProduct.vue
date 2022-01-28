@@ -14,7 +14,7 @@
                 <div class="col-12 product__reviews">{{ product.reviews }} reviews</div>
             </div>
             <div class="row mt-2">
-                <div class="col-12 product__date">added {{ product.formated_date }}</div>
+                <div class="col-12 product__date">added {{ product.date_listed }}</div>
             </div>
         </div>
         <div class="col-sm-4 product__links" v-if="source != 'product'">
