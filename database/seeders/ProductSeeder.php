@@ -55,11 +55,11 @@ class ProductSeeder extends Seeder
             $productData = array();
             foreach ($chunk as $i) {
                 $productData[] = array(
-                'title'=>$this->faker->words(3, true),
+                'title'=>$this->faker->text(10),
                 'price'=>$this->faker->randomFloat(2, 10, 10000),
                 'reviews'=>$this->faker->numberBetween(0, 1000),
                 'rating'=>$this->faker->randomFloat(2, 0, 10),
-                'date_listed'=>$this->faker->dateTime($max = 'now'),
+                'date_listed'=>$this->faker->dateTimeBetween('-2 years', 'now')
          );
             }
             //Product::insert($productData);

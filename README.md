@@ -17,13 +17,17 @@ and the product array was emptied in each iteration to avoid memory leakage. Las
 
 During the initial migration 3 indexes were created for the columns that would be queried. This would help for fetching the queried data from the database faster.
 
+### A3. Application performance monitoring
+
+Sentry was installed on the backed and frontend in order to be able to monitoring the application's performance
+
 ## B. Process
 
 Created Project
 Install composer and npm packages
 Created Model and Migration. Added indexes for columns that would be searchable
 Created Product Seeder. Researched best way to seed big volume of data. Used chunking. Increased php memory limit on docker container
-Seeded 2,000,000 x 2-3 times
+Seeded 1,000,000 x 6 times, 112 seconds per time
 
 ## C Installation instructions
 
