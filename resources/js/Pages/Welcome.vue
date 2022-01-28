@@ -30,12 +30,25 @@
                                 <label for="maxReviews">Max Reviews</label>
                                 <input id="maxReviews" type="number" min="0" max="1000" v-model="maxReviews" class="form-control" placeholder="Max Reviews" />
                             </div>
+                            <div class="col-sm-2">
+                                <label for="minDate">Min Date</label>
+                                <input id="minDate" type="text" v-model="minDate" class="form-control" placeholder="dd-mm-YY" />
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="maxDate">Max Date</label>
+                                <input id="maxDate" type="text" v-model="maxDate" class="form-control" placeholder="dd-mm-YY" />
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-3">
                                 <label for="sortProducts">Sort products by</label>
                                 <select id="sortProducts" v-model="sortFilter" class="form-select" aria-label="Sort products by">
-                                    <option value="1" selected>Price</option>
-                                    <option value="2">Date listed</option>
-                                    <option value="3">Reviews</option>
+                                    <option value="1" selected>Price &#8595;</option>
+                                    <option value="2">Price &#8593;</option>
+                                    <option value="3">Date listed &#8595;</option>
+                                    <option value="4">Date listed &#8593;</option>
+                                    <option value="5">Reviews &#8595;</option>
+                                    <option value="6">Reviews &#8593;</option>
                                 </select>
                             </div>
                             <div class="col-sm-2">
@@ -93,6 +106,8 @@ export default defineComponent({
         const maxPrice = ref(10000);
         const minReviews = ref(0);
         const maxReviews = ref(1000);
+        const minDate = ref("01/01/2018");
+        const maxDate = ref("31/01/2022");
         const sortFilter = ref(1);
         const searching = ref(null);
 
@@ -114,11 +129,12 @@ export default defineComponent({
                     maxPrice: maxPrice.value,
                     minReviews: minReviews.value,
                     maxReviews: maxReviews.value,
+                    minDate: minDate.value,
+                    maxDate: maxDate.value,
                     sort: sortFilter.value,
                 },
             })
                 .then((response) => {
-                    console.log(response.data);
                     products.value = response.data.data;
                     paginationLinks.value = response.data.links;
                     searching.value = false;
@@ -143,7 +159,7 @@ export default defineComponent({
             { immediate: true }
         );
 
-        return { products, paginationLinks, currentPage, nextPage, minPrice, maxPrice, minReviews, maxReviews, sortFilter, searching, searchProducts, getProducts, changePage };
+        return { products, paginationLinks, currentPage, nextPage, minPrice, maxPrice, minReviews, maxReviews, minDate, maxDate, sortFilter, searching, searchProducts, getProducts, changePage };
     },
 });
 </script>

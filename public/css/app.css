@@ -11296,7 +11296,6 @@ a:hover, a:focus {
 
 .form-control {
   height: 50px;
-  width: 400px;
   display: block;
   transition: all 0.4s;
 }
