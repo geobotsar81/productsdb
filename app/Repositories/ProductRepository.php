@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductRepository
@@ -15,19 +17,28 @@ class ProductRepository
      * @param String $search
      * @return LengthAwarePaginator
      */
-    public function paginated(?string $search, int $sort):LengthAwarePaginator
+    public function paginated(Request $request):Paginator
     {
-        switch ($sort) {
-            case 1:
-                $products=Product::where('title', 'LIKE', "%{$search}%")->sortByPrice()->paginate(10);
-                break;
-            case 2:
-                $products=Product::where('title', 'LIKE', "%{$search}%")->sortByDate()->paginate(10);
-                break;
-            case 3:
-                $products=Product::where('title', 'LIKE', "%{$search}%")->sortByReviews()->paginate(10);
-                break;
-        }
+
+        $minPrice=intval($request['minPrice']);
+        $maxPrice=intval($request['maxPrice']);
+        $minReviews=intval($request['minReviews']);
+        $maxReviews=intval($request['maxReviews']);
+        $sort=intval($request['sort']);
+
+        $sortBy = match ($sort){
+            1 => "price",
+            2 => "date_listed",
+            3 => "reviews",
+        };
+
+        $products=DB::table('products')
+        ->where('price','>=',$minPrice)
+        ->where('price','<=',$maxPrice)
+        ->where('reviews','>=',$minReviews)
+        ->where('reviews','<=',$maxReviews)
+        ->orderBy($sortBy,'desc')
+        ->simplePaginate(10);
 
         return $products;
     }

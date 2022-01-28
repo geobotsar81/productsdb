@@ -11,6 +11,7 @@
         "docker-build": "docker compose up nginx --build",
         "docker-start": "docker compose up nginx",
         "docker-watch": "docker compose run --rm -u node npm run watch",
+        "docker-production": "docker compose run --rm -u node npm run production",
         "docker-test": "docker exec -it php8 php artisan test",
         "docker-dusk-test": "docker exec -it php8 php artisan dusk  --colors --debug",
         "docker-artisan": "docker compose run --rm artisan"

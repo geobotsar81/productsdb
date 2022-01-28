@@ -16,6 +16,8 @@ and the product array was emptied in each iteration to avoid memory leakage. Las
 ### A2. Querying the database
 
 During the initial migration 3 indexes were created for the columns that would be queried. This would help for fetching the queried data from the database faster.
+While querying the database the Query Builder was used instead of Eloquent, for better performance.
+For pagination, simple paginate was used instead of paginate, to avoid count in the pagination query which slowed down the query
 
 ### A3. Application performance monitoring
 

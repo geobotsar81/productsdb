@@ -14,17 +14,32 @@
                 <div class="col-12">
                     <form id="searchForm" @submit.prevent="searchProducts">
                         <div class="row">
-                            <div class="col-sm-8">
-                                <label for="searchProducts">Search products</label>
-                                <input id="searchProducts" type="text" v-model="searchFilter" class="form-control searchProducts" placeholder="Search Product DB(Type your query and press enter)" />
+                            <div class="col-sm-2">
+                                <label for="minPrice">Min Price</label>
+                                <input id="minPrice" type="number" min="0" max="10000" v-model="minPrice" class="form-control" placeholder="Min Price" />
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
+                                <label for="maxPrice">Max Price</label>
+                                <input id="maxPrice" type="number" min="0" max="10000" v-model="maxPrice" class="form-control" placeholder="Max Price" />
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="minReviews">Min Reviews</label>
+                                <input id="minReviews" type="number" min="0" max="1000" v-model="minReviews" class="form-control" placeholder="Min Reviews" />
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="maxReviews">Max Reviews</label>
+                                <input id="maxReviews" type="number" min="0" max="1000" v-model="maxReviews" class="form-control" placeholder="Max Reviews" />
+                            </div>
+                            <div class="col-sm-3">
                                 <label for="sortProducts">Sort products by</label>
                                 <select id="sortProducts" v-model="sortFilter" class="form-select" aria-label="Sort products by">
                                     <option value="1" selected>Price</option>
                                     <option value="2">Date listed</option>
                                     <option value="3">Reviews</option>
                                 </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="searchProducts" @click="searchProducts">Search</div>
                             </div>
                         </div>
                     </form>
@@ -38,7 +53,14 @@
                 <div v-for="(product, index) in products" :key="index">
                     <app-product :product="product" :count="index" source="home"></app-product>
                 </div>
-                <app-pagination :currentPage="currentPage" :links="paginationLinks" v-model="currentPage" />
+            </div>
+            <div class="row mt-4" v-if="products && !searching">
+                <div class="col-12 text-center paginationLinks">
+                    <div>Page: {{ currentPage }}</div>
+
+                    <i v-if="currentPage > 1" class="far fa-arrow-alt-circle-left" @click="changePage(false)"></i>
+                    <i v-if="nextPage" class="far fa-arrow-alt-circle-right" @click="changePage(true)"></i>
+                </div>
             </div>
         </div>
     </the-main>
@@ -52,7 +74,6 @@ import { Head, InertiaLink } from "@inertiajs/inertia-vue3";
 import AppLayout from "@/Layouts/AppLayout";
 import TheMain from "@/Shared/TheMain";
 import AppProduct from "@/Shared/AppProduct";
-import AppPagination from "@/Shared/AppPagination";
 
 export default defineComponent({
     components: {
@@ -61,14 +82,17 @@ export default defineComponent({
         AppLayout,
         TheMain,
         AppProduct,
-        AppPagination,
     },
     layout: AppLayout,
     setup() {
         const products = ref(null);
         const paginationLinks = ref(null);
         const currentPage = ref(1);
-        const searchFilter = ref(null);
+        const nextPage = ref(null);
+        const minPrice = ref(0);
+        const maxPrice = ref(10000);
+        const minReviews = ref(0);
+        const maxReviews = ref(1000);
         const sortFilter = ref(1);
         const searching = ref(null);
 
@@ -86,35 +110,40 @@ export default defineComponent({
                 url: route("products.paginated"),
                 data: {
                     page: currentPage.value,
-                    search: searchFilter.value,
+                    minPrice: minPrice.value,
+                    maxPrice: maxPrice.value,
+                    minReviews: minReviews.value,
+                    maxReviews: maxReviews.value,
                     sort: sortFilter.value,
                 },
             })
                 .then((response) => {
+                    console.log(response.data);
                     products.value = response.data.data;
                     paginationLinks.value = response.data.links;
                     searching.value = false;
+                    nextPage.value = response.data.next_page_url;
                 })
                 .catch((error) => {
                     searching.value = false;
                 });
         }
 
-        //Watch for changes in search or sort filters in order to refresh the products list
+        //Modify Current Page
+        function changePage(isNext = true) {
+            return isNext ? currentPage.value++ : currentPage.value--;
+        }
+
+        //Watch for changes in current page in order to refresh the products list
         watch(
-            [searchFilter, sortFilter],
+            [currentPage],
             () => {
-                searchProducts();
+                getProducts();
             },
             { immediate: true }
         );
 
-        //Watch for changes in current page in order to refresh the products list
-        watch([currentPage], () => {
-            getProducts();
-        });
-
-        return { products, paginationLinks, currentPage, searchFilter, sortFilter, searching, searchProducts, getProducts };
+        return { products, paginationLinks, currentPage, nextPage, minPrice, maxPrice, minReviews, maxReviews, sortFilter, searching, searchProducts, getProducts, changePage };
     },
 });
 </script>
@@ -124,5 +153,27 @@ export default defineComponent({
 }
 label {
     font-size: 14px;
+}
+.paginationLinks {
+    color: $appBlack;
+    i {
+        font-size: 30px;
+        color: $appRed;
+        cursor: pointer;
+        padding: 15px 10px;
+    }
+}
+
+.searchProducts {
+    font-size: 15px;
+    font-weight: 700;
+    background-color: $appRed;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    margin-top: 30px;
+    text-align: center;
+    cursor: pointer;
 }
 </style>
