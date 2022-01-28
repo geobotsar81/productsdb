@@ -10,6 +10,11 @@
                 <div class="col-12">Visit the <inertia-link :href="route('products.statistics')">Statistics</inertia-link> section for some insights regarding our products</div>
             </div>
 
+            <div class="row mt-5" v-if="errorMessage">
+                <div class="col-12">
+                    <div class="alert alert-danger" v-html="errorMessage"></div>
+                </div>
+            </div>
             <div class="row mt-5">
                 <div class="col-12">
                     <form id="searchForm" @submit.prevent="searchProducts">
@@ -32,11 +37,11 @@
                             </div>
                             <div class="col-sm-2">
                                 <label for="minDate">Min Date</label>
-                                <input id="minDate" type="text" v-model="minDate" class="form-control" placeholder="dd-mm-YY" />
+                                <input id="minDate" type="text" v-model="minDate" class="form-control" placeholder="d/m/Y" />
                             </div>
                             <div class="col-sm-2">
                                 <label for="maxDate">Max Date</label>
-                                <input id="maxDate" type="text" v-model="maxDate" class="form-control" placeholder="dd-mm-YY" />
+                                <input id="maxDate" type="text" v-model="maxDate" class="form-control" placeholder="d/m/Y" />
                             </div>
                         </div>
                         <div class="row">
@@ -110,6 +115,7 @@ export default defineComponent({
         const maxDate = ref("31/01/2022");
         const sortFilter = ref(1);
         const searching = ref(null);
+        const errorMessage = ref("");
 
         //Search for a product
         function searchProducts() {
@@ -120,9 +126,10 @@ export default defineComponent({
         //Get products from the database
         function getProducts() {
             searching.value = true;
+            errorMessage.value = "";
             axios({
                 method: "post",
-                url: route("products.paginated"),
+                url: route("products.search"),
                 data: {
                     page: currentPage.value,
                     minPrice: minPrice.value,
@@ -135,12 +142,22 @@ export default defineComponent({
                 },
             })
                 .then((response) => {
+                    //assign values from response
                     products.value = response.data.data;
                     paginationLinks.value = response.data.links;
                     searching.value = false;
                     nextPage.value = response.data.next_page_url;
                 })
                 .catch((error) => {
+                    //Display validation errors
+                    if (error.response.data.error) {
+                        const errors = error.response.data.error;
+                        errorMessage.value = "";
+                        for (const [key, value] of Object.entries(errors)) {
+                            errorMessage.value += `${key}: ${value}<br>`;
+                        }
+                    }
+
                     searching.value = false;
                 });
         }
@@ -159,7 +176,24 @@ export default defineComponent({
             { immediate: true }
         );
 
-        return { products, paginationLinks, currentPage, nextPage, minPrice, maxPrice, minReviews, maxReviews, minDate, maxDate, sortFilter, searching, searchProducts, getProducts, changePage };
+        return {
+            products,
+            paginationLinks,
+            currentPage,
+            nextPage,
+            minPrice,
+            maxPrice,
+            minReviews,
+            maxReviews,
+            minDate,
+            maxDate,
+            sortFilter,
+            searching,
+            searchProducts,
+            getProducts,
+            changePage,
+            errorMessage,
+        };
     },
 });
 </script>
