@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\ProductRepository;
 use App\Http\Requests\StoreProductRequest;
@@ -44,12 +45,9 @@ class ProductController extends Controller
      * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function paginated(Request $request):LengthAwarePaginator
+    public function paginated(Request $request):Paginator
     {
-        $search=$request['search'];
-        $sort=$request['sort'];
-
-        $products=$this->productRepo->paginated($search, $sort);
+        $products=$this->productRepo->paginated($request);
         return $products;
     }
 }
