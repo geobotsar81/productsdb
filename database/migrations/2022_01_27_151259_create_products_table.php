@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title', 10);
             $table->float('price')->index();
             $table->smallInteger('reviews')->index();
             $table->float('rating');

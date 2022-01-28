@@ -4,8 +4,12 @@ require("./bootstrap");
 import "bootstrap";
 
 import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
+import { App as InertiaApp, plugin as InertiaPlugin } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
+
+//Import Sentry
+import * as Sentry from "@sentry/vue";
+import { Integrations } from "@sentry/tracing";
 
 //Initiate Progress Bar
 InertiaProgress.init({
@@ -15,17 +19,26 @@ InertiaProgress.init({
     showSpinner: true,
 });
 
-const appName = window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+const el = document.getElementById("app");
 
-createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => require(`./Pages/${name}.vue`),
-    setup({ el, app, props, plugin }) {
-        return createApp({ render: () => h(app, props) })
-            .use(plugin)
-            .mixin({ methods: { route } })
-            .mount(el);
-    },
+const app = createApp({
+    render: () =>
+        h(InertiaApp, {
+            initialPage: JSON.parse(el.dataset.page),
+            resolveComponent: (name) => require(`./Pages/${name}`).default,
+        }),
+})
+    .mixin({ methods: { route } })
+    .use(InertiaPlugin);
+
+Sentry.init({
+    app,
+    dsn: "https://ed84bb6e58c5409699f58c3d38f5e85b@o1128328.ingest.sentry.io/6172121",
+    integrations: [new Integrations.BrowserTracing()],
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
 });
 
-InertiaProgress.init({ color: "#4B5563" });
+app.mount(el);

@@ -7,7 +7,7 @@
             </div>
 
             <div class="row mt-4">
-                <div class="col-12">Visit the <inertia-link :href="route('login')">Statistics</inertia-link> section for some insights regarding our products</div>
+                <div class="col-12">Visit the <inertia-link :href="route('products.statistics')">Statistics</inertia-link> section for some insights regarding our products</div>
             </div>
 
             <div class="row mt-5">
