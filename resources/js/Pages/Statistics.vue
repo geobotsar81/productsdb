@@ -48,7 +48,12 @@
                                 <label for="maxDate">Max Date</label>
                                 <input id="maxDate" type="text" v-model="maxDate" class="form-control" placeholder="d/m/Y" />
                             </div>
-                            <div class="col-sm-6 col-lg-6"><span class="searchProductsBtn" @click="getStatistics">Search</span> Just click search to see some magic happening!</div>
+                            <div class="col-sm-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-12"><span class="searchProductsBtn" @click="getStatistics">Search</span></div>
+                                </div>
+                                <div class="row mt-1"><div class="col-12">Just click search to see some magic happening!</div></div>
+                            </div>
                         </div>
                     </form>
                 </div>
