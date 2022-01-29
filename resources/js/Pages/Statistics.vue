@@ -229,11 +229,11 @@ export default defineComponent({
         const statisticsChartsPrices = ref(null);
         const statisticsChartsRatings = ref(null);
         const statisticsChartsReviews = ref(null);
-        const minPrice = ref(50);
-        const maxPrice = ref(1750);
-        const minReviews = ref(10);
-        const maxReviews = ref(200);
-        const minDate = ref("01/01/2021");
+        const minPrice = ref(0);
+        const maxPrice = ref(10000);
+        const minReviews = ref(0);
+        const maxReviews = ref(1000);
+        const minDate = ref("01/01/2019");
         const maxDate = ref("31/01/2022");
         const searchingTotal = ref(null);
         const searchingDays = ref(null);
