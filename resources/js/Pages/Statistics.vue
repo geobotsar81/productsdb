@@ -60,7 +60,7 @@
                 <div class="col-12">
                     <!--Total Stats-->
                     <div class="row mt-2" v-if="searchingTotal">
-                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-10s</div>
                     </div>
                     <div class="row" v-if="statisticsTotal && !searchingTotal">
                         <div class="col-12">
@@ -80,7 +80,7 @@
                     </div>
                     <!--Day Stats-->
                     <div class="row mt-2" v-if="searchingDays">
-                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-10s</div>
                     </div>
                     <div class="row mt-5" v-if="statisticsChartsDays && !searchingDays">
                         <div class="col-12">
@@ -110,7 +110,7 @@
 
                     <!--Prices Stats-->
                     <div class="row mt-2" v-if="searchingPrices">
-                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-10s</div>
                     </div>
                     <div class="row mt-5" v-if="statisticsChartsPrices && !searchingPrices">
                         <div class="col-12">
@@ -140,7 +140,7 @@
 
                     <!--Ratings Stats-->
                     <div class="row mt-2" v-if="searchingRatings">
-                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-10s</div>
                     </div>
                     <div class="row mt-5" v-if="statisticsChartsRatings && !searchingRatings">
                         <div class="col-12">
@@ -170,7 +170,7 @@
 
                     <!--Reviews Stats-->
                     <div class="row mt-2" v-if="searchingReviews">
-                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-10s</div>
                     </div>
                     <div class="row mt-5" v-if="statisticsChartsReviews && !searchingReviews">
                         <div class="col-12">
@@ -230,9 +230,9 @@ export default defineComponent({
         const statisticsChartsRatings = ref(null);
         const statisticsChartsReviews = ref(null);
         const minPrice = ref(0);
-        const maxPrice = ref(10000);
+        const maxPrice = ref(5000);
         const minReviews = ref(0);
-        const maxReviews = ref(1000);
+        const maxReviews = ref(500);
         const minDate = ref("01/01/2019");
         const maxDate = ref("31/01/2022");
         const searchingTotal = ref(null);
