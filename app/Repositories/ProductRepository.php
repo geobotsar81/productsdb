@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
 
 class ProductRepository
 {
@@ -87,22 +88,25 @@ class ProductRepository
         $maxReviews=$request['maxReviews'];
         $minDate=$request['minDate'];
         $maxDate=$request['maxDate'];
+        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
 
-        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
-        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
-        
-       
         //Total products count
         $start = microtime(true);
-        $totalProducts=DB::table('products')
+        $totalProducts=Cache::remember('totalProductsCount.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+            $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+
+            $totalProducts=DB::table('products')
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
             ->where('reviews', '>=', $minReviews)
             ->where('reviews', '<=', $maxReviews)
             ->whereBetween('date_listed', [$startDate, $endDate])
             ->count();
-        $totalProductsTime = microtime(true) - $start;
 
+            return $totalProducts;
+        });
+        $totalProductsTime = microtime(true) - $start;
 
         $statistics=[
             'totalProducts' => number_format($totalProducts),
@@ -126,14 +130,15 @@ class ProductRepository
         $maxReviews=$request['maxReviews'];
         $minDate=$request['minDate'];
         $maxDate=$request['maxDate'];
-
-        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
-        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
-        
+        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
        
         //Products number per week day listed
         $start = microtime(true);
-        $daysQuery=DB::table('products')
+        $daysSum=Cache::remember('chartDays.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+            $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+
+            $daysQuery=DB::table('products')
             ->select(DB::raw('DAYNAME(date_listed) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
@@ -141,12 +146,15 @@ class ProductRepository
             ->where('reviews', '<=', $maxReviews)
             ->whereBetween('date_listed', [$startDate, $endDate]);
 
-        $daysSum=DB::table('productsWeekDays')
+            $daysSum=DB::table('productsWeekDays')
             ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
             ->fromSub($daysQuery, 'productsWeekDays')
             ->groupBy('dataLabel')
             ->orderBy('dataLabel', 'asc')
             ->get();
+
+            return $daysSum;
+        });
         $totalDaysTime = microtime(true) - $start;
 
 
@@ -172,13 +180,15 @@ class ProductRepository
         $maxReviews=$request['maxReviews'];
         $minDate=$request['minDate'];
         $maxDate=$request['maxDate'];
-
-        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
-        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
         
         //Products groubed by price
         $start = microtime(true);
-        $priceQuery=DB::table('products')
+        $pricesSum=Cache::remember('chartPrices.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+            $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
+            $priceQuery=DB::table('products')
             ->select(DB::raw('(floor((price + 100) / 100) * 100) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
@@ -186,12 +196,16 @@ class ProductRepository
             ->where('reviews', '<=', $maxReviews)
             ->whereBetween('date_listed', [$startDate, $endDate]);
 
-        $pricesSum=DB::table('productsRouncedPrices')
+            $pricesSum=DB::table('productsRouncedPrices')
             ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
             ->fromSub($priceQuery, 'productsRouncedPrices')
             ->groupBy('dataLabel')
             ->orderBy('dataLabel', 'asc')
             ->get();
+
+            return $pricesSum;
+        });
+
         $totalPricesTime = microtime(true) - $start;
        
         $statistics=[
@@ -216,13 +230,15 @@ class ProductRepository
         $maxReviews=$request['maxReviews'];
         $minDate=$request['minDate'];
         $maxDate=$request['maxDate'];
-
-        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
-        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
        
         //Products groubed by ratings
         $start = microtime(true);
-        $ratingQuery=DB::table('products')
+        $ratingsSum=Cache::remember('chartRatings.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+            $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
+            $ratingQuery=DB::table('products')
             ->select(DB::raw('(floor(rating)) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
@@ -230,12 +246,16 @@ class ProductRepository
             ->where('reviews', '<=', $maxReviews)
             ->whereBetween('date_listed', [$startDate, $endDate]);
 
-        $ratingsSum=DB::table('productsRatings')
+            $ratingsSum=DB::table('productsRatings')
             ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
             ->fromSub($ratingQuery, 'productsRatings')
             ->groupBy('dataLabel')
             ->orderBy('dataLabel', 'asc')
             ->get();
+
+            return $ratingsSum;
+        });
+
         $totalRatingsTime = microtime(true) - $start;
 
         $statistics=[
@@ -260,13 +280,15 @@ class ProductRepository
         $maxReviews=$request['maxReviews'];
         $minDate=$request['minDate'];
         $maxDate=$request['maxDate'];
-
-        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
-        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
         
         //Products groubed by reviews
         $start = microtime(true);
-        $reviewsQuery=DB::table('products')
+        $reviewsSum=Cache::remember('chartReviewss.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+            $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
+            $reviewsQuery=DB::table('products')
             ->select(DB::raw('(floor((reviews + 100) / 100) * 100) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
@@ -274,12 +296,16 @@ class ProductRepository
             ->where('reviews', '<=', $maxReviews)
             ->whereBetween('date_listed', [$startDate, $endDate]);
 
-        $reviewsSum=DB::table('productsReviews')
+            $reviewsSum=DB::table('productsReviews')
             ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
             ->fromSub($reviewsQuery, 'productsReviews')
             ->groupBy('dataLabel')
             ->orderBy('dataLabel', 'asc')
             ->get();
+
+            return $reviewsSum;
+        });
+       
         $totalReviewsTime = microtime(true) - $start;
 
         $statistics=[
