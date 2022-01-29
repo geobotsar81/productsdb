@@ -79,7 +79,7 @@ class ProductRepository
      * @param Request $request
      * @return array
      */
-    public function getStatistics(Request $request):array
+    public function getStatisticsTotal(Request $request):array
     {
         $minPrice=$request['minPrice'];
         $maxPrice=$request['maxPrice'];
@@ -103,6 +103,34 @@ class ProductRepository
             ->count();
         $totalProductsTime = microtime(true) - $start;
 
+
+        $statistics=[
+            'totalProducts' => number_format($totalProducts),
+            'totalProductsTime' => $totalProductsTime,
+        ];
+
+        return $statistics;
+    }
+
+    /**
+     * Get days statistics about the products
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getStatisticsChartsDays(Request $request):array
+    {
+        $minPrice=$request['minPrice'];
+        $maxPrice=$request['maxPrice'];
+        $minReviews=$request['minReviews'];
+        $maxReviews=$request['maxReviews'];
+        $minDate=$request['minDate'];
+        $maxDate=$request['maxDate'];
+
+        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
+       
         //Products number per week day listed
         $start = microtime(true);
         $daysQuery=DB::table('products')
@@ -121,6 +149,33 @@ class ProductRepository
             ->get();
         $totalDaysTime = microtime(true) - $start;
 
+
+        $statistics=[
+            'days' => $daysSum,
+            'totalDaysTime' => $totalDaysTime,
+        ];
+
+        return $statistics;
+    }
+
+    /**
+     * Get prices statistics about the products
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getStatisticsChartsPrices(Request $request):array
+    {
+        $minPrice=$request['minPrice'];
+        $maxPrice=$request['maxPrice'];
+        $minReviews=$request['minReviews'];
+        $maxReviews=$request['maxReviews'];
+        $minDate=$request['minDate'];
+        $maxDate=$request['maxDate'];
+
+        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
         //Products groubed by price
         $start = microtime(true);
         $priceQuery=DB::table('products')
@@ -138,6 +193,32 @@ class ProductRepository
             ->orderBy('dataLabel', 'asc')
             ->get();
         $totalPricesTime = microtime(true) - $start;
+       
+        $statistics=[
+            'prices' => $pricesSum,
+            'totalPricesTime' => $totalPricesTime,
+        ];
+
+        return $statistics;
+    }
+
+    /**
+     * Get ratings statistics about the products
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getStatisticsChartsRatings(Request $request):array
+    {
+        $minPrice=$request['minPrice'];
+        $maxPrice=$request['maxPrice'];
+        $minReviews=$request['minReviews'];
+        $maxReviews=$request['maxReviews'];
+        $minDate=$request['minDate'];
+        $maxDate=$request['maxDate'];
+
+        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
        
         //Products groubed by ratings
         $start = microtime(true);
@@ -157,6 +238,32 @@ class ProductRepository
             ->get();
         $totalRatingsTime = microtime(true) - $start;
 
+        $statistics=[
+            'ratings' => $ratingsSum,
+            'totalRatingsTime' => $totalRatingsTime,
+        ];
+
+        return $statistics;
+    }
+
+    /**
+     * Get reviews statistics about the products
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getStatisticsChartsReviews(Request $request):array
+    {
+        $minPrice=$request['minPrice'];
+        $maxPrice=$request['maxPrice'];
+        $minReviews=$request['minReviews'];
+        $maxReviews=$request['maxReviews'];
+        $minDate=$request['minDate'];
+        $maxDate=$request['maxDate'];
+
+        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
         //Products groubed by reviews
         $start = microtime(true);
         $reviewsQuery=DB::table('products')
@@ -176,14 +283,6 @@ class ProductRepository
         $totalReviewsTime = microtime(true) - $start;
 
         $statistics=[
-            'totalProducts' => number_format($totalProducts),
-            'totalProductsTime' => $totalProductsTime,
-            'days' => $daysSum,
-            'totalDaysTime' => $totalDaysTime,
-            'prices' => $pricesSum,
-            'totalPricesTime' => $totalPricesTime,
-            'ratings' => $ratingsSum,
-            'totalRatingsTime' => $totalRatingsTime,
             'reviews' => $reviewsSum,
             'totalReviewsTime' => $totalReviewsTime
         ];

@@ -56,26 +56,33 @@
                 </div>
             </div>
 
-            <div class="row mt-2" v-if="searching">
-                <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 10s - 30s</div>
-            </div>
-            <div class="mt-4" v-if="statistics && !searching">
+            <div class="mt-4">
                 <div class="col-12">
                     <!--Total Stats-->
-                    <div class="row">
-                        <div class="col-12"><h2>Total Stats</h2></div>
+                    <div class="row mt-2" v-if="searchingTotal">
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
                     </div>
-                    <div class="row">
-                        <div class="col-12"><hr /></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12"><strong>Total Products: </strong>{{ statistics.totalProducts }}</div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-12"><strong>Query Time: </strong>{{ statistics.totalProductsTime }}</div>
+                    <div class="row" v-if="statisticsTotal && !searchingTotal">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12"><h2>Total Stats</h2></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12"><hr /></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12"><strong>Total Products: </strong>{{ statisticsTotal.totalProducts }}</div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-12"><strong>Query Time: </strong>{{ statisticsTotal.totalProductsTime }}</div>
+                            </div>
+                        </div>
                     </div>
                     <!--Day Stats-->
-                    <div class="row mt-5" v-if="statistics.days">
+                    <div class="row mt-2" v-if="searchingDays">
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                    </div>
+                    <div class="row mt-5" v-if="statisticsChartsDays && !searchingDays">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12"><h2>Products listed per Week day</h2></div>
@@ -85,24 +92,27 @@
                             </div>
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
-                                    <div class="row" v-for="(day, index) in statistics.days" :key="index">
+                                    <div class="row" v-for="(day, index) in statisticsChartsDays.days" :key="index">
                                         <div class="col-12">
                                             <strong>{{ day.dataLabel }}: </strong>{{ day.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
-                                        <div class="col-12"><strong>Query Time: </strong>{{ statistics.totalDaysTime }}</div>
+                                        <div class="col-12"><strong>Query Time: </strong>{{ statisticsChartsDays.totalDaysTime }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-4">
-                                    <vue3-chart-js type="pie" :data="getChart(statistics.days)" />
+                                    <vue3-chart-js type="pie" :data="getChart(statisticsChartsDays.days)" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!--Prices Stats-->
-                    <div class="row mt-5" v-if="statistics.prices">
+                    <div class="row mt-2" v-if="searchingPrices">
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                    </div>
+                    <div class="row mt-5" v-if="statisticsChartsPrices && !searchingPrices">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12"><h2>Products per Price range</h2></div>
@@ -112,24 +122,27 @@
                             </div>
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
-                                    <div class="row" v-for="(price, index) in statistics.prices" :key="index">
+                                    <div class="row" v-for="(price, index) in statisticsChartsPrices.prices" :key="index">
                                         <div class="col-12">
                                             <strong>{{ price.dataLabel - 100 }} - {{ price.dataLabel }}: </strong>{{ price.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
-                                        <div class="col-12"><strong>Query Time: </strong>{{ statistics.totalPricesTime }}</div>
+                                        <div class="col-12"><strong>Query Time: </strong>{{ statisticsChartsPrices.totalPricesTime }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-4">
-                                    <vue3-chart-js type="doughnut" :data="getChart(statistics.prices)" />
+                                    <vue3-chart-js type="doughnut" :data="getChart(statisticsChartsPrices.prices)" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!--Ratings Stats-->
-                    <div class="row mt-5" v-if="statistics.ratings">
+                    <div class="row mt-2" v-if="searchingRatings">
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                    </div>
+                    <div class="row mt-5" v-if="statisticsChartsRatings && !searchingRatings">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12"><h2>Products per rating</h2></div>
@@ -139,24 +152,27 @@
                             </div>
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
-                                    <div class="row" v-for="(rating, index) in statistics.ratings" :key="index">
+                                    <div class="row" v-for="(rating, index) in statisticsChartsRatings.ratings" :key="index">
                                         <div class="col-12">
                                             <strong>{{ rating.dataLabel }}: </strong>{{ rating.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
-                                        <div class="col-12"><strong>Query Time: </strong>{{ statistics.totalRatingsTime }}</div>
+                                        <div class="col-12"><strong>Query Time: </strong>{{ statisticsChartsRatings.totalRatingsTime }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
-                                    <vue3-chart-js type="bar" :data="getChart(statistics.ratings)" />
+                                    <vue3-chart-js type="bar" :data="getChart(statisticsChartsRatings.ratings)" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!--Reviews Stats-->
-                    <div class="row mt-5" v-if="statistics.reviews">
+                    <div class="row mt-2" v-if="searchingReviews">
+                        <div class="col-12"><img src="img/LoaderIcon.gif" /> Querying 6m records ...Average waiting time 2s-5s</div>
+                    </div>
+                    <div class="row mt-5" v-if="statisticsChartsReviews && !searchingReviews">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12"><h2>Products per Reviews range</h2></div>
@@ -166,17 +182,17 @@
                             </div>
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
-                                    <div class="row" v-for="(review, index) in statistics.reviews" :key="index">
+                                    <div class="row" v-for="(review, index) in statisticsChartsReviews.reviews" :key="index">
                                         <div class="col-12">
                                             <strong>{{ review.dataLabel - 100 }} - {{ review.dataLabel }}: </strong>{{ review.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
-                                        <div class="col-12"><strong>Query Time: </strong>{{ statistics.totalReviewsTime }}</div>
+                                        <div class="col-12"><strong>Query Time: </strong>{{ statisticsChartsReviews.totalReviewsTime }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-4">
-                                    <vue3-chart-js type="doughnut" :data="getChart(statistics.reviews)" />
+                                    <vue3-chart-js type="doughnut" :data="getChart(statisticsChartsReviews.reviews)" />
                                 </div>
                             </div>
                         </div>
@@ -208,23 +224,39 @@ export default defineComponent({
     },
     layout: AppLayout,
     setup() {
-        const statistics = ref(null);
+        const statisticsTotal = ref(null);
+        const statisticsChartsDays = ref(null);
+        const statisticsChartsPrices = ref(null);
+        const statisticsChartsRatings = ref(null);
+        const statisticsChartsReviews = ref(null);
         const minPrice = ref(50);
         const maxPrice = ref(1750);
         const minReviews = ref(10);
         const maxReviews = ref(200);
         const minDate = ref("01/01/2021");
         const maxDate = ref("31/01/2022");
-        const searching = ref(null);
+        const searchingTotal = ref(null);
+        const searchingDays = ref(null);
+        const searchingPrices = ref(null);
+        const searchingRatings = ref(null);
+        const searchingReviews = ref(null);
         const errorMessage = ref("");
 
-        //Get products from the database
+        //Get statistics from the database. To improve performance queries were split into seperate calls
         function getStatistics() {
-            searching.value = true;
+            getStatisticsData("products.get_statistics_total", "statisticsTotal", "searchingTotal");
+            getStatisticsData("products.get_statistics_charts_days", "statisticsChartsDays", "searchingDays");
+            getStatisticsData("products.get_statistics_charts_prices", "statisticsChartsPrices", "searchingPrices");
+            getStatisticsData("products.get_statistics_charts_reviews", "statisticsChartsReviews", "searchingRatings");
+            getStatisticsData("products.get_statistics_charts_ratings", "statisticsChartsRatings", "searchingReviews");
+        }
+
+        function getStatisticsData(statisticsRoute, statisticsDataObject, searchIndicator) {
+            eval(searchIndicator).value = true;
             errorMessage.value = "";
             axios({
                 method: "post",
-                url: route("products.get_statistics"),
+                url: route(statisticsRoute),
                 data: {
                     minPrice: minPrice.value,
                     maxPrice: maxPrice.value,
@@ -236,8 +268,8 @@ export default defineComponent({
             })
                 .then((response) => {
                     //assign values from response
-                    statistics.value = response.data;
-                    searching.value = false;
+                    eval(statisticsDataObject).value = response.data;
+                    eval(searchIndicator).value = false;
                 })
                 .catch((error) => {
                     //Display validation errors
@@ -249,7 +281,7 @@ export default defineComponent({
                         }
                     }
 
-                    searching.value = false;
+                    eval(searchIndicator).value = false;
                 });
         }
 
@@ -334,14 +366,22 @@ export default defineComponent({
         }
 
         return {
-            statistics,
+            statisticsTotal,
+            statisticsChartsDays,
+            statisticsChartsPrices,
+            statisticsChartsRatings,
+            statisticsChartsReviews,
             minPrice,
             maxPrice,
             minReviews,
             maxReviews,
             minDate,
             maxDate,
-            searching,
+            searchingTotal,
+            searchingDays,
+            searchingPrices,
+            searchingRatings,
+            searchingReviews,
             getStatistics,
             errorMessage,
             getChart,
