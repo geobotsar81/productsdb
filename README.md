@@ -14,13 +14,13 @@ There were 2 main areas to focus when tackling the above task.
 
 ### A1. Tech Stack
 
--   To develop the application, Laravel was used, along with Inertiajs and Vuejs. By using Inertiajs it means that there is a tight coupling of the backend with the frontend, but in my opinion this overweights the complexity of having two mainten 2 web apps, along with exposing an api and routing.
+-   To develop the application, Laravel was used, along with Inertiajs and Vuejs. By using Inertiajs it means that there is a tight coupling of the backend with the frontend, but in my opinion this overweights the complexity of having two maintain 2 web apps, along with exposing an api and routing.
 -   MYSQL was used for the database, and although other alternatives like MongoDB might have been better, this was a matter of using what i was familiar with for the allocated time, and from some research it seems that MYSQL can handle well data up to 100m+ records.
 
 ### A2. Seeding the database
 
 -   The best way to seed the database was using chunks in the database seeder. That meant splitting the seeding in smaller pieces/chunks in order to avoid memory exhaustion issues.
--   Further to that, insert was used db instead of db create as it is faster, and the product array was emptied in each iteration to avoid memory leakage.
+-   Further to that, db insert was used instead of db create as it is faster, and the product array was emptied in each iteration to avoid memory leakage.
 -   Lastly the php memory limit on the docker container was increased, as the default 128M didnt give a lot of room to work with.
 
 ### A3. Querying the database
