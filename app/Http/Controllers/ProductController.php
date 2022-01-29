@@ -33,6 +33,17 @@ class ProductController extends Controller
     }
 
     /**
+     * Display a Product
+     *
+     * @param Product $product
+     * @return Response
+     */
+    public function show(Product $product):Response
+    {
+        return Inertia::render('Products/Show', ['product' => $product]);
+    }
+
+    /**
      * Search and get a paginated list of all the products
      *
      * @param SearchFormRequest $request validates the search fields
@@ -48,7 +59,7 @@ class ProductController extends Controller
 
 
     /**
-     * Display the home page
+     * Display the statistics page
      */
     public function statistics():Response
     {
@@ -56,27 +67,72 @@ class ProductController extends Controller
     }
 
     /**
-     * Search and get the statistics data
+     * Search and get the total statistics data
      *
      * @param SearchFormRequest $request validates the search fields
      * @return array
      */
-    public function getStatistcs(SearchFormRequest $request):array
+    public function getStatisticsTotal(SearchFormRequest $request):array
     {
         //Get products from repository
-        $statistics=$this->productRepo->getStatistics($request);
+        $statistics=$this->productRepo->getStatisticsTotal($request);
 
         return $statistics;
     }
 
     /**
-     * Display a Product
+     * Search and get the days charts statistics data
      *
-     * @param Product $product
-     * @return Response
+     * @param SearchFormRequest $request validates the search fields
+     * @return array
      */
-    public function show(Product $product):Response
+    public function getStatisticsChartsDays(SearchFormRequest $request):array
     {
-        return Inertia::render('Products/Show', ['product' => $product]);
+        //Get products from repository
+        $statistics=$this->productRepo->getStatisticsChartsDays($request);
+
+        return $statistics;
+    }
+
+    /**
+     * Search and get the prices charts statistics data
+     *
+     * @param SearchFormRequest $request validates the search fields
+     * @return array
+     */
+    public function getStatisticsChartsPrices(SearchFormRequest $request):array
+    {
+        //Get products from repository
+        $statistics=$this->productRepo->getStatisticsChartsPrices($request);
+
+        return $statistics;
+    }
+
+    /**
+     * Search and get the reviews charts statistics data
+     *
+     * @param SearchFormRequest $request validates the search fields
+     * @return array
+     */
+    public function getStatisticsChartsReviews(SearchFormRequest $request):array
+    {
+        //Get products from repository
+        $statistics=$this->productRepo->getStatisticsChartsReviews($request);
+
+        return $statistics;
+    }
+
+    /**
+     * Search and get the ratings charts statistics data
+     *
+     * @param SearchFormRequest $request validates the search fields
+     * @return array
+     */
+    public function getStatisticsChartsRatings(SearchFormRequest $request):array
+    {
+        //Get products from repository
+        $statistics=$this->productRepo->getStatisticsChartsRatings($request);
+
+        return $statistics;
     }
 }
