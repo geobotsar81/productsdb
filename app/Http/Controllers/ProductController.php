@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use Inertia\Response;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\ProductRepository;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Http\Requests\SearchFormRequest;
 
 class ProductController extends Controller
 {
@@ -27,44 +24,59 @@ class ProductController extends Controller
         $this->productRepo=$productRepo;
     }
 
+    /**
+     * Display the home page
+     */
+    public function index():Response
+    {
+        return Inertia::render('Welcome');
+    }
 
     /**
-     * Display the specified resource.
+     * Search and get a paginated list of all the products
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param SearchFormRequest $request validates the search fields
+     * @return Paginator
      */
-    public function show(Product $product)
+    public function search(SearchFormRequest $request):Paginator
     {
-        return Inertia::render('Products/Show', ['product' => $product]);
+        //Get products from repository
+        $products=$this->productRepo->getProducts($request);
+
+        return $products;
     }
 
 
     /**
-     * Get a paginated list of all the products
-     *
-     * @param Request $request
-     * @return LengthAwarePaginator
+     * Display the home page
      */
-    public function search(Request $request)
+    public function statistics():Response
     {
-        //Validate search fields
-        $validator = Validator::make($request->all(), [
-            'minPrice' => 'required',
-            'maxPrice' => 'required',
-            'minReviews' => 'required',
-            'maxReviews' => 'required',
-            'minDate' => 'required|date_format:d/m/Y',
-            'maxDate' => 'required|date_format:d/m/Y',
-        ]);
+        return Inertia::render('Statistics');
+    }
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        }
-
+    /**
+     * Search and get the statistics data
+     *
+     * @param SearchFormRequest $request validates the search fields
+     * @return array
+     */
+    public function getStatistcs(SearchFormRequest $request):array
+    {
         //Get products from repository
-        $products=$this->productRepo->paginated($request);
+        $statistics=$this->productRepo->getStatistics($request);
 
-        return $products;
+        return $statistics;
+    }
+
+    /**
+     * Display a Product
+     *
+     * @param Product $product
+     * @return Response
+     */
+    public function show(Product $product):Response
+    {
+        return Inertia::render('Products/Show', ['product' => $product]);
     }
 }

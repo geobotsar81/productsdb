@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6 col-lg-4 text-center text-sm-start">
-                    <inertia-link :href="route('home')" class="logo"> ProductsDB </inertia-link>
+                    <inertia-link :href="route('products.home')" class="logo"> ProductsDB </inertia-link>
                 </div>
                 <div class="col-sm-6 col-lg-8 text-center text-sm-end">
                     <inertia-link :href="route('products.statistics')" class="pe-2"> Statistics </inertia-link> |

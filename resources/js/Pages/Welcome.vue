@@ -3,7 +3,7 @@
     <the-main id="main">
         <div class="container">
             <div class="row">
-                <div class="col-12"><h1>Welcome to TheProductDB</h1></div>
+                <div class="col-12"><h1>Welcome to ProductsDB</h1></div>
             </div>
 
             <div class="row mt-4">
@@ -150,8 +150,8 @@ export default defineComponent({
                 })
                 .catch((error) => {
                     //Display validation errors
-                    if (error.response.data.error) {
-                        const errors = error.response.data.error;
+                    if (error.response.data.errors) {
+                        const errors = error.response.data.errors;
                         errorMessage.value = "";
                         for (const [key, value] of Object.entries(errors)) {
                             errorMessage.value += `${key}: ${value}<br>`;
