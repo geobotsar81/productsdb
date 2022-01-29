@@ -15,15 +15,15 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-//Display the home page
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
-
-//Search products in homepage
-Route::post('search-products', [ProductController::class,'search'])->name('products.search');
-Route::get('statistics', [ProductController::class,'show'])->name('products.statistics');
 
 
-//Display a product
-Route::get('show/{product}', [ProductController::class,'show'])->name('products.show');
+//Home page routes
+Route::name('products.')->group(function () {
+    Route::get('/', [ProductController::class,'index'])->name('home');
+    Route::post('search-products', [ProductController::class,'search'])->name('search');
+    //Statistics routes
+    Route::get('statistics', [ProductController::class,'statistics'])->name('statistics');
+    Route::post('get-statistics', [ProductController::class,'getStatistcs'])->name('get_statistics');
+    //Single product route
+    Route::get('show/{product}', [ProductController::class,'show'])->name('show');
+});

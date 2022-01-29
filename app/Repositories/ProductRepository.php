@@ -3,30 +3,32 @@
 namespace App\Repositories;
 
 use Carbon\Carbon;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
+    public function __construct()
+    {
+        $this->cacheDuration=config('cache.stores.redis.duration');
+    }
 
     /**
      * Get a paginated list of products
      *
      * @param String $search
-     * @return LengthAwarePaginator
+     * @return Paginator
      */
-    public function paginated(Request $request):Paginator
+    public function getProducts(Request $request):Paginator
     {
-        $minPrice=intval($request['minPrice']);
-        $maxPrice=intval($request['maxPrice']);
-        $minReviews=intval($request['minReviews']);
-        $maxReviews=intval($request['maxReviews']);
+        $minPrice=$request['minPrice'];
+        $maxPrice=$request['maxPrice'];
+        $minReviews=$request['minReviews'];
+        $maxReviews=$request['maxReviews'];
         $minDate=$request['minDate'];
         $maxDate=$request['maxDate'];
-        $sort=intval($request['sort']);
+        $sort=$request['sort'];
         $sortDirection="desc";
 
         switch ($sort) {
@@ -69,5 +71,123 @@ class ProductRepository
         ->simplePaginate(10);
 
         return $products;
+    }
+
+    /**
+     * Get statistics about the products
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getStatistics(Request $request):array
+    {
+        $minPrice=$request['minPrice'];
+        $maxPrice=$request['maxPrice'];
+        $minReviews=$request['minReviews'];
+        $maxReviews=$request['maxReviews'];
+        $minDate=$request['minDate'];
+        $maxDate=$request['maxDate'];
+
+        $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
+        $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
+        
+       
+        //Total products count
+        $start = microtime(true);
+        $totalProducts=DB::table('products')
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->where('reviews', '>=', $minReviews)
+            ->where('reviews', '<=', $maxReviews)
+            ->whereBetween('date_listed', [$startDate, $endDate])
+            ->count();
+        $totalProductsTime = microtime(true) - $start;
+
+        //Products number per week day listed
+        $start = microtime(true);
+        $daysQuery=DB::table('products')
+            ->select(DB::raw('DAYNAME(date_listed) as dataLabel'))
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->where('reviews', '>=', $minReviews)
+            ->where('reviews', '<=', $maxReviews)
+            ->whereBetween('date_listed', [$startDate, $endDate]);
+
+        $daysSum=DB::table('productsWeekDays')
+            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+            ->fromSub($daysQuery, 'productsWeekDays')
+            ->groupBy('dataLabel')
+            ->orderBy('dataLabel', 'asc')
+            ->get();
+        $totalDaysTime = microtime(true) - $start;
+
+        //Products groubed by price
+        $start = microtime(true);
+        $priceQuery=DB::table('products')
+            ->select(DB::raw('(floor((price + 100) / 100) * 100) as dataLabel'))
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->where('reviews', '>=', $minReviews)
+            ->where('reviews', '<=', $maxReviews)
+            ->whereBetween('date_listed', [$startDate, $endDate]);
+
+        $pricesSum=DB::table('productsRouncedPrices')
+            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+            ->fromSub($priceQuery, 'productsRouncedPrices')
+            ->groupBy('dataLabel')
+            ->orderBy('dataLabel', 'asc')
+            ->get();
+        $totalPricesTime = microtime(true) - $start;
+       
+        //Products groubed by ratings
+        $start = microtime(true);
+        $ratingQuery=DB::table('products')
+            ->select(DB::raw('(floor(rating)) as dataLabel'))
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->where('reviews', '>=', $minReviews)
+            ->where('reviews', '<=', $maxReviews)
+            ->whereBetween('date_listed', [$startDate, $endDate]);
+
+        $ratingsSum=DB::table('productsRatings')
+            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+            ->fromSub($ratingQuery, 'productsRatings')
+            ->groupBy('dataLabel')
+            ->orderBy('dataLabel', 'asc')
+            ->get();
+        $totalRatingsTime = microtime(true) - $start;
+
+        //Products groubed by reviews
+        $start = microtime(true);
+        $reviewsQuery=DB::table('products')
+            ->select(DB::raw('(floor((reviews + 100) / 100) * 100) as dataLabel'))
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->where('reviews', '>=', $minReviews)
+            ->where('reviews', '<=', $maxReviews)
+            ->whereBetween('date_listed', [$startDate, $endDate]);
+
+        $reviewsSum=DB::table('productsReviews')
+            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+            ->fromSub($reviewsQuery, 'productsReviews')
+            ->groupBy('dataLabel')
+            ->orderBy('dataLabel', 'asc')
+            ->get();
+        $totalReviewsTime = microtime(true) - $start;
+
+        $statistics=[
+            'totalProducts' => number_format($totalProducts),
+            'totalProductsTime' => $totalProductsTime,
+            'days' => $daysSum,
+            'totalDaysTime' => $totalDaysTime,
+            'prices' => $pricesSum,
+            'totalPricesTime' => $totalPricesTime,
+            'ratings' => $ratingsSum,
+            'totalRatingsTime' => $totalRatingsTime,
+            'reviews' => $reviewsSum,
+            'totalReviewsTime' => $totalReviewsTime
+        ];
+
+        return $statistics;
     }
 }
