@@ -48,7 +48,12 @@
                                 <label for="maxDate">Max Date</label>
                                 <input id="maxDate" type="text" v-model="maxDate" class="form-control" placeholder="d/m/Y" />
                             </div>
-                            <div class="col-sm-6 col-lg-6"><span class="searchProductsBtn" @click="getStatistics">Search</span> Just click search to see some magic happening!</div>
+                            <div class="col-sm-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-12"><span class="searchProductsBtn" @click="getStatistics">Search</span></div>
+                                </div>
+                                <div class="row mt-1"><div class="col-12">Just click search to see some magic happening!</div></div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -83,7 +88,7 @@
                     <div class="row mt-5" v-if="statisticsChartsDays && !searchingDays">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12"><h2>Products listed per Week day</h2></div>
+                                <div class="col-12"><h2>Products added per week day</h2></div>
                             </div>
                             <div class="row">
                                 <div class="col-12"><hr /></div>
@@ -113,7 +118,7 @@
                     <div class="row mt-5" v-if="statisticsChartsPrices && !searchingPrices">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12"><h2>Products per Price range</h2></div>
+                                <div class="col-12"><h2>Products per price range</h2></div>
                             </div>
                             <div class="row">
                                 <div class="col-12"><hr /></div>
@@ -152,7 +157,12 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="row" v-for="(rating, index) in statisticsChartsRatings.ratings" :key="index">
                                         <div class="col-12">
-                                            <strong>{{ rating.dataLabel }}: </strong>{{ rating.dataCount }}
+                                            <span v-if="rating.dataLabel != 10"
+                                                ><strong>{{ rating.dataLabel }} - {{ rating.dataLabel + 1 }}: </strong>{{ rating.dataCount }}</span
+                                            >
+                                            <span v-else
+                                                ><strong>{{ rating.dataLabel }}: </strong>{{ rating.dataCount }}</span
+                                            >
                                         </div>
                                     </div>
                                     <div class="row mt-1">
@@ -173,7 +183,7 @@
                     <div class="row mt-5" v-if="statisticsChartsReviews && !searchingReviews">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12"><h2>Products per Reviews range</h2></div>
+                                <div class="col-12"><h2>Products per reviews range</h2></div>
                             </div>
                             <div class="row">
                                 <div class="col-12"><hr /></div>

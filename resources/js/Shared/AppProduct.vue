@@ -3,7 +3,7 @@
         <div class="col-sm-2">
             <div class="product__image"><i class="fab fa-amazon"></i></div>
         </div>
-        <div class="col-sm-6 mt-2 mt-sm-0">
+        <div class="col-sm-6 mt-2 mt-sm-0 mb-2">
             <div class="row">
                 <div class="col-12 product__rating">{{ product.rating }}/10</div>
             </div>
