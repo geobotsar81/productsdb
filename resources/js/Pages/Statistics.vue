@@ -97,7 +97,7 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="row" v-for="(day, index) in statisticsChartsDays.days" :key="index">
                                         <div class="col-12">
-                                            <strong>{{ day.dataLabel }}: </strong>{{ day.dataCount }}
+                                            <strong>{{ getWeekday(day.dataLabel) }}: </strong>{{ day.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
@@ -253,6 +253,12 @@ export default defineComponent({
         const searchingReviews = ref(null);
         const errorMessage = ref("");
 
+        //Get the name of the day
+        function getWeekday(day) {
+            const weekdays = ["Monday", " Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            return weekdays[day];
+        }
+
         //Get statistics from the database. To improve performance queries were split into seperate calls
         function getStatistics() {
             getStatisticsData("products.get_statistics_total", "statisticsTotal", "searchingTotal");
@@ -396,6 +402,7 @@ export default defineComponent({
             getStatistics,
             errorMessage,
             getChart,
+            getWeekday,
         };
     },
 });
