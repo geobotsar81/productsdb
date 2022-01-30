@@ -127,7 +127,7 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="row" v-for="(price, index) in statisticsChartsPrices.prices" :key="index">
                                         <div class="col-12">
-                                            <strong>{{ price.dataLabel - 1000 }} - {{ price.dataLabel - 1 }}: </strong>{{ price.dataCount }}
+                                            <strong>{{ price.dataLabel - 999 }} - {{ price.dataLabel }}: </strong>{{ price.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
@@ -157,8 +157,8 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="row" v-for="(rating, index) in statisticsChartsRatings.ratings" :key="index">
                                         <div class="col-12">
-                                            <span v-if="rating.dataLabel != 10"
-                                                ><strong>{{ rating.dataLabel }} - {{ rating.dataLabel + 0.99 }}: </strong>{{ rating.dataCount }}</span
+                                            <span v-if="rating.dataLabel != 0"
+                                                ><strong>{{ Number.parseFloat(rating.dataLabel - 0.9).toPrecision(2) }} - {{ rating.dataLabel }}: </strong>{{ rating.dataCount }}</span
                                             >
                                             <span v-else
                                                 ><strong>{{ rating.dataLabel }}: </strong>{{ rating.dataCount }}</span
@@ -191,8 +191,11 @@
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
                                     <div class="row" v-for="(review, index) in statisticsChartsReviews.reviews" :key="index">
-                                        <div class="col-12">
-                                            <strong>{{ review.dataLabel - 100 }} - {{ review.dataLabel - 1 }}: </strong>{{ review.dataCount }}
+                                        <div class="col-12" v-if="review.dataLabel != 0">
+                                            <strong>{{ review.dataLabel - 99 }} - {{ review.dataLabel }}: </strong>{{ review.dataCount }}
+                                        </div>
+                                        <div class="col-12" v-else>
+                                            <strong>{{ review.dataLabel }}: </strong>{{ review.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
