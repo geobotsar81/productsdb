@@ -49,7 +49,7 @@ class ProductSeeder extends Seeder
         
         $no_of_rows = 1000000;
         $range=range(1, $no_of_rows);
-        $chunksize=1000;
+        $chunksize=2000;
 
         foreach (array_chunk($range, $chunksize) as $chunk) {
             $productData = array();
