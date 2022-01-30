@@ -189,7 +189,7 @@ class ProductRepository
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
         
             $priceQuery=DB::table('products')
-            ->select(DB::raw('(floor((price + 1000) / 1000) * 1000) as dataLabel'))
+            ->select(DB::raw('(ceil((price ) / 1000) * 1000) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
             ->where('reviews', '>=', $minReviews)
@@ -239,7 +239,7 @@ class ProductRepository
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
         
             $ratingQuery=DB::table('products')
-            ->select(DB::raw('(floor(rating)) as dataLabel'))
+            ->select(DB::raw('(ceil(rating)) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
             ->where('reviews', '>=', $minReviews)
@@ -289,7 +289,7 @@ class ProductRepository
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
         
             $reviewsQuery=DB::table('products')
-            ->select(DB::raw('(floor((reviews + 100) / 100) * 100) as dataLabel'))
+            ->select(DB::raw('(ceil((reviews) / 100) * 100) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
             ->where('reviews', '>=', $minReviews)
