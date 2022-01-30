@@ -139,7 +139,7 @@ class ProductRepository
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
 
             $daysQuery=DB::table('products')
-            ->select(DB::raw('DAYNAME(date_listed) as dataLabel'))
+            ->select(DB::raw('WEEKDAY(date_listed) as dataLabel'), DB::raw('DAY(date_listed) as day'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
             ->where('reviews', '>=', $minReviews)
