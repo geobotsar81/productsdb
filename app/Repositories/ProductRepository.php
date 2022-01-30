@@ -189,7 +189,7 @@ class ProductRepository
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
         
             $priceQuery=DB::table('products')
-            ->select(DB::raw('(floor((price + 100) / 100) * 100) as dataLabel'))
+            ->select(DB::raw('(floor((price + 1000) / 1000) * 1000) as dataLabel'))
             ->where('price', '>=', $minPrice)
             ->where('price', '<=', $maxPrice)
             ->where('reviews', '>=', $minReviews)

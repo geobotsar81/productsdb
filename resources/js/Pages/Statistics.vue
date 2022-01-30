@@ -127,7 +127,7 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="row" v-for="(price, index) in statisticsChartsPrices.prices" :key="index">
                                         <div class="col-12">
-                                            <strong>{{ price.dataLabel - 100 }} - {{ price.dataLabel - 1 }}: </strong>{{ price.dataCount }}
+                                            <strong>{{ price.dataLabel - 1000 }} - {{ price.dataLabel - 1 }}: </strong>{{ price.dataCount }}
                                         </div>
                                     </div>
                                     <div class="row mt-1">
