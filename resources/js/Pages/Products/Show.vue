@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <inertia-link :href="route('home')"><i class="far fa-long-arrow-alt-left"></i> back to home page</inertia-link>
+                    <inertia-link :href="route('products.home')"><i class="far fa-long-arrow-alt-left"></i> back to home page</inertia-link>
                 </div>
             </div>
             <div class="row mt-4">
