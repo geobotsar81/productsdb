@@ -1,5 +1,5 @@
 <template>
-    <Head :title="product.title + '-' + product.year" />
+    <Head :title="product.title" />
     <the-main id="main">
         <div class="container">
             <div class="row">
