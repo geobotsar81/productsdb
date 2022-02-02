@@ -12,7 +12,7 @@ class ProductRepository
 {
     public function __construct()
     {
-        $this->cacheDuration=config('cache.stores.redis.duration');
+        $this->cacheDuration = config('cache.stores.redis.duration');
     }
 
     /**
@@ -21,55 +21,55 @@ class ProductRepository
      * @param String $search
      * @return Paginator
      */
-    public function getProducts(Request $request):Paginator
+    public function getProducts(Request $request): Paginator
     {
-        $minPrice=$request['minPrice'];
-        $maxPrice=$request['maxPrice'];
-        $minReviews=$request['minReviews'];
-        $maxReviews=$request['maxReviews'];
-        $minDate=$request['minDate'];
-        $maxDate=$request['maxDate'];
-        $sort=$request['sort'];
-        $sortDirection="desc";
+        $minPrice = $request['minPrice'];
+        $maxPrice = $request['maxPrice'];
+        $minReviews = $request['minReviews'];
+        $maxReviews = $request['maxReviews'];
+        $minDate = $request['minDate'];
+        $maxDate = $request['maxDate'];
+        $sort = $request['sort'];
+        $sortDirection = "desc";
 
         switch ($sort) {
             case 1:
-                $sortBy ="price";
-                $sortDirection="desc";
+                $sortBy = "price";
+                $sortDirection = "desc";
                 break;
             case 2:
-                $sortBy ="price";
-                $sortDirection="asc";
+                $sortBy = "price";
+                $sortDirection = "asc";
                 break;
             case 3:
-                $sortBy ="date_listed";
-                $sortDirection="desc";
+                $sortBy = "date_listed";
+                $sortDirection = "desc";
                 break;
             case 4:
-                $sortBy ="date_listed";
-                $sortDirection="asc";
+                $sortBy = "date_listed";
+                $sortDirection = "asc";
                 break;
             case 5:
-                $sortBy ="reviews";
-                $sortDirection="desc";
+                $sortBy = "reviews";
+                $sortDirection = "desc";
                 break;
             case 6:
-                $sortBy ="reviews";
-                $sortDirection="asc";
+                $sortBy = "reviews";
+                $sortDirection = "asc";
                 break;
         }
 
         $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
         $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
 
-        $products=DB::table('products')
-        ->where('price', '>=', $minPrice)
-        ->where('price', '<=', $maxPrice)
-        ->where('reviews', '>=', $minReviews)
-        ->where('reviews', '<=', $maxReviews)
-        ->whereBetween('date_listed', [$startDate, $endDate])
-        ->orderBy($sortBy, $sortDirection)
-        ->simplePaginate(10);
+        $products = DB::table('products')
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->where('reviews', '>=', $minReviews)
+            ->where('reviews', '<=', $maxReviews)
+            ->whereBetween('date_listed', [$startDate, $endDate])
+            ->orderBy($sortBy, $sortDirection)
+            ->simplePaginate(10);
 
         return $products;
     }
@@ -80,35 +80,35 @@ class ProductRepository
      * @param Request $request
      * @return array
      */
-    public function getStatisticsTotal(Request $request):array
+    public function getStatisticsTotal(Request $request): array
     {
-        $minPrice=$request['minPrice'];
-        $maxPrice=$request['maxPrice'];
-        $minReviews=$request['minReviews'];
-        $maxReviews=$request['maxReviews'];
-        $minDate=$request['minDate'];
-        $maxDate=$request['maxDate'];
-        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
+        $minPrice = $request['minPrice'];
+        $maxPrice = $request['maxPrice'];
+        $minReviews = $request['minReviews'];
+        $maxReviews = $request['maxReviews'];
+        $minDate = $request['minDate'];
+        $maxDate = $request['maxDate'];
+        $redisString = $minPrice . "-" . $maxPrice . "-" . $minReviews . "-" . $maxReviews . "-" . $minDate . "-" . $maxDate;
 
         //Total products count
         $start = microtime(true);
-        $totalProducts=Cache::remember('totalProductsCount.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+        $totalProducts = Cache::remember('totalProductsCount.' . $redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
             $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
 
-            $totalProducts=DB::table('products')
-            ->where('price', '>=', $minPrice)
-            ->where('price', '<=', $maxPrice)
-            ->where('reviews', '>=', $minReviews)
-            ->where('reviews', '<=', $maxReviews)
-            ->whereBetween('date_listed', [$startDate, $endDate])
-            ->count();
+            $totalProducts = DB::table('products')
+                ->where('price', '>=', $minPrice)
+                ->where('price', '<=', $maxPrice)
+                ->where('reviews', '>=', $minReviews)
+                ->where('reviews', '<=', $maxReviews)
+                ->whereBetween('date_listed', [$startDate, $endDate])
+                ->count();
 
             return $totalProducts;
         });
         $totalProductsTime = microtime(true) - $start;
 
-        $statistics=[
+        $statistics = [
             'totalProducts' => number_format($totalProducts),
             'totalProductsTime' => $totalProductsTime,
         ];
@@ -122,43 +122,42 @@ class ProductRepository
      * @param Request $request
      * @return array
      */
-    public function getStatisticsChartsDays(Request $request):array
+    public function getStatisticsChartsDays(Request $request): array
     {
-        $minPrice=$request['minPrice'];
-        $maxPrice=$request['maxPrice'];
-        $minReviews=$request['minReviews'];
-        $maxReviews=$request['maxReviews'];
-        $minDate=$request['minDate'];
-        $maxDate=$request['maxDate'];
-        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
-       
+        $minPrice = $request['minPrice'];
+        $maxPrice = $request['maxPrice'];
+        $minReviews = $request['minReviews'];
+        $maxReviews = $request['maxReviews'];
+        $minDate = $request['minDate'];
+        $maxDate = $request['maxDate'];
+        $redisString = $minPrice . "-" . $maxPrice . "-" . $minReviews . "-" . $maxReviews . "-" . $minDate . "-" . $maxDate;
+
         //Products number per week day listed
         $start = microtime(true);
-        $daysSum=Cache::remember('chartDays.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+        $daysSum = Cache::remember('chartDays.' . $redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
             $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
 
-            $daysQuery=DB::table('products')
-            ->select(DB::raw('WEEKDAY(date_listed) as dataLabel'), DB::raw('DAY(date_listed) as day'))
-            ->where('price', '>=', $minPrice)
-            ->where('price', '<=', $maxPrice)
-            ->where('reviews', '>=', $minReviews)
-            ->where('reviews', '<=', $maxReviews)
-            ->whereBetween('date_listed', [$startDate, $endDate]);
+            $daysQuery = DB::table('products')
+                ->select(DB::raw('WEEKDAY(date_listed) as dataLabel'), DB::raw('DAY(date_listed) as day'))
+                ->where('price', '>=', $minPrice)
+                ->where('price', '<=', $maxPrice)
+                ->where('reviews', '>=', $minReviews)
+                ->where('reviews', '<=', $maxReviews)
+                ->whereBetween('date_listed', [$startDate, $endDate]);
 
-            $daysSum=DB::table('productsWeekDays')
-            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
-            ->fromSub($daysQuery, 'productsWeekDays')
-            ->groupBy('dataLabel')
-            ->orderBy('dataLabel', 'asc')
-            ->get();
+            $daysSum = DB::table('productsWeekDays')
+                ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+                ->fromSub($daysQuery, 'productsWeekDays')
+                ->groupBy('dataLabel')
+                ->orderBy('dataLabel', 'asc')
+                ->get();
 
             return $daysSum;
         });
         $totalDaysTime = microtime(true) - $start;
 
-
-        $statistics=[
+        $statistics = [
             'days' => $daysSum,
             'totalDaysTime' => $totalDaysTime,
         ];
@@ -172,43 +171,43 @@ class ProductRepository
      * @param Request $request
      * @return array
      */
-    public function getStatisticsChartsPrices(Request $request):array
+    public function getStatisticsChartsPrices(Request $request): array
     {
-        $minPrice=$request['minPrice'];
-        $maxPrice=$request['maxPrice'];
-        $minReviews=$request['minReviews'];
-        $maxReviews=$request['maxReviews'];
-        $minDate=$request['minDate'];
-        $maxDate=$request['maxDate'];
-        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
-        
+        $minPrice = $request['minPrice'];
+        $maxPrice = $request['maxPrice'];
+        $minReviews = $request['minReviews'];
+        $maxReviews = $request['maxReviews'];
+        $minDate = $request['minDate'];
+        $maxDate = $request['maxDate'];
+        $redisString = $minPrice . "-" . $maxPrice . "-" . $minReviews . "-" . $maxReviews . "-" . $minDate . "-" . $maxDate;
+
         //Products groubed by price
         $start = microtime(true);
-        $pricesSum=Cache::remember('chartPrices.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+        $pricesSum = Cache::remember('chartPrices.' . $redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
             $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
-        
-            $priceQuery=DB::table('products')
-            ->select(DB::raw('(ceil((price ) / 1000) * 1000) as dataLabel'))
-            ->where('price', '>=', $minPrice)
-            ->where('price', '<=', $maxPrice)
-            ->where('reviews', '>=', $minReviews)
-            ->where('reviews', '<=', $maxReviews)
-            ->whereBetween('date_listed', [$startDate, $endDate]);
 
-            $pricesSum=DB::table('productsRouncedPrices')
-            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
-            ->fromSub($priceQuery, 'productsRouncedPrices')
-            ->groupBy('dataLabel')
-            ->orderBy('dataLabel', 'asc')
-            ->get();
+            $priceQuery = DB::table('products')
+                ->select(DB::raw('(ceil((price ) / 1000) * 1000) as dataLabel'))
+                ->where('price', '>=', $minPrice)
+                ->where('price', '<=', $maxPrice)
+                ->where('reviews', '>=', $minReviews)
+                ->where('reviews', '<=', $maxReviews)
+                ->whereBetween('date_listed', [$startDate, $endDate]);
+
+            $pricesSum = DB::table('productsRouncedPrices')
+                ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+                ->fromSub($priceQuery, 'productsRouncedPrices')
+                ->groupBy('dataLabel')
+                ->orderBy('dataLabel', 'asc')
+                ->get();
 
             return $pricesSum;
         });
 
         $totalPricesTime = microtime(true) - $start;
-       
-        $statistics=[
+
+        $statistics = [
             'prices' => $pricesSum,
             'totalPricesTime' => $totalPricesTime,
         ];
@@ -222,43 +221,43 @@ class ProductRepository
      * @param Request $request
      * @return array
      */
-    public function getStatisticsChartsRatings(Request $request):array
+    public function getStatisticsChartsRatings(Request $request): array
     {
-        $minPrice=$request['minPrice'];
-        $maxPrice=$request['maxPrice'];
-        $minReviews=$request['minReviews'];
-        $maxReviews=$request['maxReviews'];
-        $minDate=$request['minDate'];
-        $maxDate=$request['maxDate'];
-        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
-       
+        $minPrice = $request['minPrice'];
+        $maxPrice = $request['maxPrice'];
+        $minReviews = $request['minReviews'];
+        $maxReviews = $request['maxReviews'];
+        $minDate = $request['minDate'];
+        $maxDate = $request['maxDate'];
+        $redisString = $minPrice . "-" . $maxPrice . "-" . $minReviews . "-" . $maxReviews . "-" . $minDate . "-" . $maxDate;
+
         //Products groubed by ratings
         $start = microtime(true);
-        $ratingsSum=Cache::remember('chartRatings.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+        $ratingsSum = Cache::remember('chartRatings.' . $redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
             $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
-        
-            $ratingQuery=DB::table('products')
-            ->select(DB::raw('(ceil(rating)) as dataLabel'))
-            ->where('price', '>=', $minPrice)
-            ->where('price', '<=', $maxPrice)
-            ->where('reviews', '>=', $minReviews)
-            ->where('reviews', '<=', $maxReviews)
-            ->whereBetween('date_listed', [$startDate, $endDate]);
 
-            $ratingsSum=DB::table('productsRatings')
-            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
-            ->fromSub($ratingQuery, 'productsRatings')
-            ->groupBy('dataLabel')
-            ->orderBy('dataLabel', 'asc')
-            ->get();
+            $ratingQuery = DB::table('products')
+                ->select(DB::raw('(ceil(rating)) as dataLabel'))
+                ->where('price', '>=', $minPrice)
+                ->where('price', '<=', $maxPrice)
+                ->where('reviews', '>=', $minReviews)
+                ->where('reviews', '<=', $maxReviews)
+                ->whereBetween('date_listed', [$startDate, $endDate]);
+
+            $ratingsSum = DB::table('productsRatings')
+                ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+                ->fromSub($ratingQuery, 'productsRatings')
+                ->groupBy('dataLabel')
+                ->orderBy('dataLabel', 'asc')
+                ->get();
 
             return $ratingsSum;
         });
 
         $totalRatingsTime = microtime(true) - $start;
 
-        $statistics=[
+        $statistics = [
             'ratings' => $ratingsSum,
             'totalRatingsTime' => $totalRatingsTime,
         ];
@@ -272,45 +271,45 @@ class ProductRepository
      * @param Request $request
      * @return array
      */
-    public function getStatisticsChartsReviews(Request $request):array
+    public function getStatisticsChartsReviews(Request $request): array
     {
-        $minPrice=$request['minPrice'];
-        $maxPrice=$request['maxPrice'];
-        $minReviews=$request['minReviews'];
-        $maxReviews=$request['maxReviews'];
-        $minDate=$request['minDate'];
-        $maxDate=$request['maxDate'];
-        $redisString=$minPrice."-".$maxPrice."-".$minReviews."-".$maxReviews."-".$minDate."-".$maxDate;
-        
+        $minPrice = $request['minPrice'];
+        $maxPrice = $request['maxPrice'];
+        $minReviews = $request['minReviews'];
+        $maxReviews = $request['maxReviews'];
+        $minDate = $request['minDate'];
+        $maxDate = $request['maxDate'];
+        $redisString = $minPrice . "-" . $maxPrice . "-" . $minReviews . "-" . $maxReviews . "-" . $minDate . "-" . $maxDate;
+
         //Products groubed by reviews
         $start = microtime(true);
-        $reviewsSum=Cache::remember('chartReviewss.'.$redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
+        $reviewsSum = Cache::remember('chartReviewss.' . $redisString, $this->cacheDuration, function () use ($minPrice, $maxPrice, $minReviews, $maxReviews, $minDate, $maxDate) {
             $startDate = Carbon::createFromFormat('d/m/Y', $minDate);
             $endDate = Carbon::createFromFormat('d/m/Y', $maxDate);
-        
-            $reviewsQuery=DB::table('products')
-            ->select(DB::raw('(ceil((reviews) / 100) * 100) as dataLabel'))
-            ->where('price', '>=', $minPrice)
-            ->where('price', '<=', $maxPrice)
-            ->where('reviews', '>=', $minReviews)
-            ->where('reviews', '<=', $maxReviews)
-            ->whereBetween('date_listed', [$startDate, $endDate]);
 
-            $reviewsSum=DB::table('productsReviews')
-            ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
-            ->fromSub($reviewsQuery, 'productsReviews')
-            ->groupBy('dataLabel')
-            ->orderBy('dataLabel', 'asc')
-            ->get();
+            $reviewsQuery = DB::table('products')
+                ->select(DB::raw('(ceil((reviews) / 100) * 100) as dataLabel'))
+                ->where('price', '>=', $minPrice)
+                ->where('price', '<=', $maxPrice)
+                ->where('reviews', '>=', $minReviews)
+                ->where('reviews', '<=', $maxReviews)
+                ->whereBetween('date_listed', [$startDate, $endDate]);
+
+            $reviewsSum = DB::table('productsReviews')
+                ->select(DB::RAW('COUNT(dataLabel) as dataCount'), 'dataLabel')
+                ->fromSub($reviewsQuery, 'productsReviews')
+                ->groupBy('dataLabel')
+                ->orderBy('dataLabel', 'asc')
+                ->get();
 
             return $reviewsSum;
         });
-       
+
         $totalReviewsTime = microtime(true) - $start;
 
-        $statistics=[
+        $statistics = [
             'reviews' => $reviewsSum,
-            'totalReviewsTime' => $totalReviewsTime
+            'totalReviewsTime' => $totalReviewsTime,
         ];
 
         return $statistics;

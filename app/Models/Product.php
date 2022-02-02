@@ -10,7 +10,6 @@ class Product extends Model
 {
     use HasFactory;
 
-
     public $appends = ['formated_date'];
 
     /**
@@ -18,43 +17,37 @@ class Product extends Model
      *
      * @var string[]
      */
-    protected $fillable = [
-        'title',
-        'price',
-        'reviews',
-        'rating',
-        'date_listed',
-    ];
+    protected $fillable = ['title', 'price', 'reviews', 'rating', 'date_listed'];
 
     /**
-    * Sort by Price
-    *
-    * @param [type] $query
-    * @return Builder
-    */
-    public function scopeSortByPrice($query):Builder
+     * Sort by Price
+     *
+     * @param [type] $query
+     * @return Builder
+     */
+    public function scopeSortByPrice($query): Builder
     {
         return $query->orderBy('price', 'asc');
     }
 
     /**
-    * Sort by date
-    *
-    * @param [type] $query
-    * @return Builder
-    */
-    public function scopeSortByDate($query):Builder
+     * Sort by date
+     *
+     * @param [type] $query
+     * @return Builder
+     */
+    public function scopeSortByDate($query): Builder
     {
         return $query->orderBy('date_listed', 'desc');
     }
 
     /**
-    * Sort by Reviews
-    *
-    * @param [type] $query
-    * @return Builder
-    */
-    public function scopeSortByReviews($query):Builder
+     * Sort by Reviews
+     *
+     * @param [type] $query
+     * @return Builder
+     */
+    public function scopeSortByReviews($query): Builder
     {
         return $query->orderBy('reviews', 'desc');
     }
@@ -64,9 +57,9 @@ class Product extends Model
      *
      * @return string
      */
-    public function getFormatedDateAttribute():string
+    public function getFormatedDateAttribute(): string
     {
-        $formated_date=\Carbon\Carbon::createFromTimeStamp(strtotime($this->date_listed))->diffForHumans();
+        $formated_date = \Carbon\Carbon::createFromTimeStamp(strtotime($this->date_listed))->diffForHumans();
         return $formated_date;
     }
 }

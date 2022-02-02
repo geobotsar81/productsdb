@@ -21,13 +21,13 @@ class ProductController extends Controller
      */
     public function __construct(ProductRepository $productRepo)
     {
-        $this->productRepo=$productRepo;
+        $this->productRepo = $productRepo;
     }
 
     /**
      * Display the home page
      */
-    public function index():Response
+    public function index(): Response
     {
         return Inertia::render('Welcome');
     }
@@ -38,7 +38,7 @@ class ProductController extends Controller
      * @param Product $product
      * @return Response
      */
-    public function show(Product $product):Response
+    public function show(Product $product): Response
     {
         return Inertia::render('Products/Show', ['product' => $product]);
     }
@@ -49,19 +49,18 @@ class ProductController extends Controller
      * @param SearchFormRequest $request validates the search fields
      * @return Paginator
      */
-    public function search(SearchFormRequest $request):Paginator
+    public function search(SearchFormRequest $request): Paginator
     {
         //Get products from repository
-        $products=$this->productRepo->getProducts($request);
+        $products = $this->productRepo->getProducts($request);
 
         return $products;
     }
 
-
     /**
      * Display the statistics page
      */
-    public function statistics():Response
+    public function statistics(): Response
     {
         return Inertia::render('Statistics');
     }
@@ -72,10 +71,10 @@ class ProductController extends Controller
      * @param SearchFormRequest $request validates the search fields
      * @return array
      */
-    public function getStatisticsTotal(SearchFormRequest $request):array
+    public function getStatisticsTotal(SearchFormRequest $request): array
     {
         //Get products from repository
-        $statistics=$this->productRepo->getStatisticsTotal($request);
+        $statistics = $this->productRepo->getStatisticsTotal($request);
 
         return $statistics;
     }
@@ -86,10 +85,10 @@ class ProductController extends Controller
      * @param SearchFormRequest $request validates the search fields
      * @return array
      */
-    public function getStatisticsChartsDays(SearchFormRequest $request):array
+    public function getStatisticsChartsDays(SearchFormRequest $request): array
     {
         //Get products from repository
-        $statistics=$this->productRepo->getStatisticsChartsDays($request);
+        $statistics = $this->productRepo->getStatisticsChartsDays($request);
 
         return $statistics;
     }
@@ -100,10 +99,10 @@ class ProductController extends Controller
      * @param SearchFormRequest $request validates the search fields
      * @return array
      */
-    public function getStatisticsChartsPrices(SearchFormRequest $request):array
+    public function getStatisticsChartsPrices(SearchFormRequest $request): array
     {
         //Get products from repository
-        $statistics=$this->productRepo->getStatisticsChartsPrices($request);
+        $statistics = $this->productRepo->getStatisticsChartsPrices($request);
 
         return $statistics;
     }
@@ -114,10 +113,10 @@ class ProductController extends Controller
      * @param SearchFormRequest $request validates the search fields
      * @return array
      */
-    public function getStatisticsChartsReviews(SearchFormRequest $request):array
+    public function getStatisticsChartsReviews(SearchFormRequest $request): array
     {
         //Get products from repository
-        $statistics=$this->productRepo->getStatisticsChartsReviews($request);
+        $statistics = $this->productRepo->getStatisticsChartsReviews($request);
 
         return $statistics;
     }
@@ -128,10 +127,10 @@ class ProductController extends Controller
      * @param SearchFormRequest $request validates the search fields
      * @return array
      */
-    public function getStatisticsChartsRatings(SearchFormRequest $request):array
+    public function getStatisticsChartsRatings(SearchFormRequest $request): array
     {
         //Get products from repository
-        $statistics=$this->productRepo->getStatisticsChartsRatings($request);
+        $statistics = $this->productRepo->getStatisticsChartsRatings($request);
 
         return $statistics;
     }

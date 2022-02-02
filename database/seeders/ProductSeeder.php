@@ -10,7 +10,6 @@ use Illuminate\Container\Container;
 
 class ProductSeeder extends Seeder
 {
-
     /**
      * The current Faker instance.
      *
@@ -46,21 +45,21 @@ class ProductSeeder extends Seeder
     public function run()
     {
         //Product::truncate();
-        
+
         $no_of_rows = 1000000;
-        $range=range(1, $no_of_rows);
-        $chunksize=2000;
+        $range = range(1, $no_of_rows);
+        $chunksize = 2000;
 
         foreach (array_chunk($range, $chunksize) as $chunk) {
-            $productData = array();
+            $productData = [];
             foreach ($chunk as $i) {
-                $productData[] = array(
-                'title'=>$this->faker->text(10),
-                'price'=>$this->faker->randomFloat(2, 10, 10000),
-                'reviews'=>$this->faker->numberBetween(0, 1000),
-                'rating'=>$this->faker->randomFloat(2, 0, 10),
-                'date_listed'=>$this->faker->dateTimeBetween('-2 years', 'now')
-         );
+                $productData[] = [
+                    'title' => $this->faker->text(10),
+                    'price' => $this->faker->randomFloat(2, 10, 10000),
+                    'reviews' => $this->faker->numberBetween(0, 1000),
+                    'rating' => $this->faker->randomFloat(2, 0, 10),
+                    'date_listed' => $this->faker->dateTimeBetween('-2 years', 'now'),
+                ];
             }
             //Product::insert($productData);
             DB::table('products')->insert($productData);
